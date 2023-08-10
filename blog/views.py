@@ -1,6 +1,6 @@
-from django.shortcuts import render, get_object_or_404
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.generic import ListView, DetailView
+from django.shortcuts import get_object_or_404
+from django.views.generic import ListView, DetailView, CreateView
+from django.utils.text import slugify
 from .models import Post
 
 
@@ -29,8 +29,16 @@ class PostDetailView(DetailView):
         return obj
 
 
-def post_create(request):
-    ...
+class PostCreateView(CreateView):
+    model = Post
+    context_object_name = 'post_create'
+    fields = ['title', 'author', 'body']
+    template_name = 'blog/post/create.html'
+
+    def form_valid(self, form):
+        form.instance.slug = slugify(form.instance.title)
+        form.save()
+        return super().form_valid(form)
 
 
 def post_edit(request, year, month, day, post):
