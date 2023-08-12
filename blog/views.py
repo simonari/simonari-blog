@@ -2,15 +2,16 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.utils.text import slugify
 from django.http import HttpResponseRedirect, HttpResponseNotFound
-from .models import Post
+from .models import Post, User
 from .forms import DraftDetailUpdateForm, PostDetailUpdateForm
+
 
 STATUS_TO_SLUG = {
     'posted': 'post',
     'drafted': 'draft'
 }
 
-STATUS_ANTIPODE = {
+STATUS_ANTIPODES = {
     'posted': 'drafted',
     'drafted': 'posted'
 }
@@ -25,7 +26,7 @@ class PostListView(ListView):
 
 
 class DraftListView(ListView):
-    queryset = Post.objects.filter(status='draft')
+    queryset = Post.objects.filter(status='drafted')
     context_object_name = "drafts"
 
     paginate_by = 5
@@ -62,26 +63,9 @@ class BaseDetailView(UpdateView):
 
         return self.kwargs[slug]
 
-    def _set_status(self, status):
-        self.object.status = status
-        self.object.save()
-
-    def _change_status(self):
-        status_to_set = STATUS_ANTIPODE.get(self.object.status)
-
-        if not status_to_set:
-            raise ValueError(f'Status {self.object.status} can not be changed')
-
-        self._set_status(status_to_set)
-
-    def form_valid(self, form):
-        self._change_status()
-        url_redirect = self.object.get_absolute_url()
-        return HttpResponseRedirect(url_redirect)
-
 
 class DraftDetailView(BaseDetailView):
-    context_object_name = "draft"
+    context_object_name = "post"
     form_class = DraftDetailUpdateForm
     template_name = 'blog/draft/detail.html'
 
@@ -90,20 +74,21 @@ class DraftDetailView(BaseDetailView):
 
 class PostDetailView(BaseDetailView):
     context_object_name = 'post'
+    form_class = PostDetailUpdateForm
     template_name = 'blog/post/detail.html'
 
-    form_class = PostDetailUpdateForm
     object_status = 'posted'
 
 
 class PostCreateView(CreateView):
     model = Post
     context_object_name = 'post_create'
-    fields = ['title', 'author', 'body']
+    fields = ['title', 'body']
     template_name = 'blog/post/create.html'
 
     def form_valid(self, form):
         form.instance.slug = slugify(form.instance.title)
+        form.instance.author = User.objects.get(username='admin')
         form.save()
         return super().form_valid(form)
 
