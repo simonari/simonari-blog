@@ -40,7 +40,12 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('blog:post_detail',
+        if self.status == 'draft':
+            viewname = 'blog:draft_detail'
+        elif self.status == 'published':
+            viewname = 'blog:post_detail'
+
+        return reverse(viewname,
                        args=(self.published.year,
                              self.published.month,
                              self.published.day,
