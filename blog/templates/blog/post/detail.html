@@ -1,12 +1,14 @@
 {% extends 'blog/base_detail.html' %}
 
 {% block buttons %}
-<div class="row">
-    {% comment %} <div class="is-right"> {% endcomment %}
+<hr>
+<form method="post">
+    <div class="is-right row">
+        {% csrf_token %}
+        {% comment %} {{ form }} {% endcomment %}
         <submit type="submit" class="button primary col-2">Edit</submit>
-    {% comment %} </div> {% endcomment %}
-    {% comment %} <div class="is-right"> {% endcomment %}
+        <submit type="submit" class="button secondary col-2">To drafts</submit>
         <submit type="submit" class="button error col-2">Delete</submit>
-    {% comment %} </div> {% endcomment %}
-</div>
+    </div>
+</form>
 {% endblock buttons %}
