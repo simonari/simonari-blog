@@ -4,24 +4,16 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 
 
-class PublishManager(models.Manager):
-    def get_queryset(self):
-        return super(PublishManager, self) \
-            .get_queryset() \
-            .filter(status='published')
-
-
 class Post(models.Model):
     objects = models.Manager()
-    publish = PublishManager()
 
     STATUS_CHOICES = (
-        ('draft', 'Draft'),
-        ('published', 'Published'),
+        ('drafted', 'Drafted'),
+        ('posted', 'Published'),
     )
     title = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250,
-                            unique_for_date='published')
+                            unique_for_date='posted')
     author = models.ForeignKey(User,
                                on_delete=models.CASCADE,
                                related_name='blog_posts')
@@ -31,7 +23,7 @@ class Post(models.Model):
     updated = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=10,
                               choices=STATUS_CHOICES,
-                              default='draft')
+                              default='drafted')
 
     class Meta:
         ordering = ('-published',)
@@ -40,12 +32,16 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        if self.status == 'draft':
-            viewname = 'blog:draft_detail'
-        elif self.status == 'published':
-            viewname = 'blog:post_detail'
+        view_name = None
+        if self.status == 'drafted':
+            view_name = 'blog:draft_detail'
+        elif self.status == 'posted':
+            view_name = 'blog:post_detail'
 
-        return reverse(viewname,
+        if not view_name:
+            raise ValueError(f"No such viewname as {view_name}")
+
+        return reverse(view_name,
                        args=(self.published.year,
                              self.published.month,
                              self.published.day,
