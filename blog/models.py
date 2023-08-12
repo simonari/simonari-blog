@@ -9,11 +9,11 @@ class Post(models.Model):
 
     STATUS_CHOICES = (
         ('drafted', 'Drafted'),
-        ('posted', 'Published'),
+        ('posted', 'Posted'),
     )
     title = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250,
-                            unique_for_date='posted')
+                            unique_for_date='published')
     author = models.ForeignKey(User,
                                on_delete=models.CASCADE,
                                related_name='blog_posts')
