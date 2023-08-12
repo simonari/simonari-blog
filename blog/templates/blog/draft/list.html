@@ -1,0 +1,22 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Drafts{% endblock %}
+
+{% block content %}
+    <h1>My blog</h1>
+    {% for draft in drafts %}
+        <div class="card">
+            <h2>
+                <a href="{{ draft.get_absolute_url  }}">
+                    {{ draft.title }}
+                </a>
+            </h2>
+            <p class='date'>
+                Published on {{ draft.published  }} by {{ draft.author }}
+            </p>
+            {{ draft.body | truncatewords:30 | linebreaks }}
+        </div>    
+    
+    {% endfor %}
+    {% include 'blog/pagination.html' with page=page_obj %}
+{% endblock %}

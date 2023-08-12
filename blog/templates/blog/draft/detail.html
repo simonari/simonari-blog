@@ -1,0 +1,23 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}
+{{ draft.title }}
+{% endblock title %}
+
+{% block content %}
+<form method='post'>
+    {% csrf_token %}
+    {{ form }}
+    <label for='status'>
+        <input type='hidden' name='status' id='status' value='published'>
+    </label>
+    
+
+    <h1>{{ draft.title }}</h1>
+    <p class='date'>
+        Published on {{ draft.published }} by {{ draft.author }}
+    </p>
+    {{ draft.body | linebreaks }}
+    <input type="submit" value="Publish">
+</form>
+{% endblock content %}
