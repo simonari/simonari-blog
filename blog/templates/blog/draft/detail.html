@@ -1,23 +1,21 @@
-{% extends 'blog/base.html' %}
+{% extends 'blog/base_detail.html' %}
 
-{% block title %}
-{{ draft.title }}
-{% endblock title %}
-
-{% block content %}
-<form method='post'>
+{% block buttons %}
+<hr>
+<div class="is-right row">
+    <form method="POST" class="col-2">
+        {% csrf_token %}
+        <input type="submit" class="button primary is-full-width" value="Edit">
+    </form>
+    <form method="POST" class="col-2"
+    action={% url 'blog:change_post_status' post.published.year post.published.month post.published.day post.status post.slug %}>
+        {% csrf_token %}
+        <input type="submit" class="button secondary is-full-width" value="Publish">
+    </form>
+    <form method="POST" class="col-2"
+    action={% url 'blog:delete_post' post.published.year post.published.month post.published.day post.status post.slug %}>
     {% csrf_token %}
-    {{ form }}
-    <label for='status'>
-        <input type='hidden' name='status' id='status' value='published'>
-    </label>
-    
-
-    <h1>{{ draft.title }}</h1>
-    <p class='date'>
-        Published on {{ draft.published }} by {{ draft.author }}
-    </p>
-    {{ draft.body | linebreaks }}
-    <input type="submit" value="Publish">
-</form>
-{% endblock content %}
+        <input type="submit" class="button error is-full-width" value="Delete">
+    </form>
+</div>
+{% endblock buttons %}
