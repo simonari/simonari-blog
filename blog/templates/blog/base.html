@@ -3,16 +3,12 @@
 <html lang="en">
 <head>
     <title>{% block title %}{% endblock title %}</title>
-    <link href="{% static "css/blog.css" %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/chota@latest">
 </head>
 <body>
-    <div>
-        {% block content %}
-        {% endblock %}
-    </div>
-    <div id="sidebar">
-        <h2>My blog</h2>
-        <p>This is my blog.</p>
+    <div class="container">
+        <h1 class="is-horizontal-align">Simonari's blog</h1>
+        {% block content %}{% endblock content %}
     </div>
 </body>
 </html>

@@ -1,19 +1,28 @@
-{% extends 'blog/base.html' %}
+{% extends 'blog/base.html' %} 
 
-{% block title %}My blog{% endblock %}
+{% block title %}My blog{% endblock %} 
 
 {% block content %}
-    <h1>My blog</h1>
-    {% for post in posts %}
-        <h2>
-            <a href="{{ post.get_absolute_url  }}">
-                {{ post.title }}
-            </a>
-        </h2>
-        <p class='date'>
-            Published on {{ post.published  }} by {{ post.author }}
-        </p>
-        {{ post.body | truncatewords:30 | linebreaks }}
-    {% endfor %}
-    {% include 'blog/pagination.html' with page=page_obj %}
-{% endblock %}
+{% for post in posts %}
+<div class="is-horizontal-align row">
+    {% comment %} <div class="col-3"></div> {% endcomment %}
+    <div class="is-full-width col-6">
+        <div class="card">
+            <div class="row">
+                <header>
+                    <h4><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h4>
+                </header>
+            </div>
+            <div class="row">
+                <p>{{ post.body | truncatewords:30 | linebreaks }}</p>
+            </div>
+            <div class="row">
+                <p>Published on {{ post.published }}</p>
+            </div>
+        </div>
+    </div>
+    {% comment %} <div class="col-3"></div> {% endcomment %}
+</div>
+{% endfor %}
+{% include 'blog/pagination.html' with page=page_obj %} 
+{% endblock content%}

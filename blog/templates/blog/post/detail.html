@@ -1,11 +1,12 @@
-{% extends 'blog/base.html' %}
+{% extends 'blog/base_detail.html' %}
 
-{% block title %}{{ post.title }}{% endblock title %}
-
-{% block content %}
-    <h1>{{ post.title }}</h1>
-    <p class='date'>
-        Published on {{ post.published }} by {{ post.author }}
-    </p>
-    {{ post.body | linebreaks }}
-{% endblock content %}
+{% block buttons %}
+<div class="row">
+    {% comment %} <div class="is-right"> {% endcomment %}
+        <submit type="submit" class="button primary col-2">Edit</submit>
+    {% comment %} </div> {% endcomment %}
+    {% comment %} <div class="is-right"> {% endcomment %}
+        <submit type="submit" class="button error col-2">Delete</submit>
+    {% comment %} </div> {% endcomment %}
+</div>
+{% endblock buttons %}
