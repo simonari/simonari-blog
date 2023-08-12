@@ -5,15 +5,9 @@ from django.http import HttpResponseRedirect, HttpResponseNotFound
 from .models import Post, User
 from .forms import DraftDetailUpdateForm, PostDetailUpdateForm
 
-
 STATUS_TO_SLUG = {
     'posted': 'post',
     'drafted': 'draft'
-}
-
-STATUS_ANTIPODES = {
-    'posted': 'drafted',
-    'drafted': 'posted'
 }
 
 
@@ -88,6 +82,7 @@ class PostCreateView(CreateView):
 
     def form_valid(self, form):
         form.instance.slug = slugify(form.instance.title)
+        # TODO past user's profile after authorization
         form.instance.author = User.objects.get(username='admin')
         form.save()
         return super().form_valid(form)

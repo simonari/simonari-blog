@@ -53,4 +53,3 @@ def change_post_status(request, year, month, day, status, slug):
     redirect_to = obj.get_absolute_url()
 
     return HttpResponseRedirect(redirect_to)
-
