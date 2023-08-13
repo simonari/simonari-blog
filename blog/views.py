@@ -82,8 +82,7 @@ class PostCreateView(CreateView):
 
     def form_valid(self, form):
         form.instance.slug = slugify(form.instance.title)
-        # TODO past user's profile after authorization
-        form.instance.author = User.objects.get(username='admin')
+        form.instance.author = User.objects.get(username=self.request.user.username)
         form.save()
         return super().form_valid(form)
 
