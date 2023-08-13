@@ -1,10 +1,14 @@
 from django.db import models
 from django.utils import timezone
+from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.urls import reverse
 
 
 class Post(models.Model):
+    class Meta:
+        ordering = ('-published',)
+
     objects = models.Manager()
 
     STATUS_CHOICES = (
@@ -25,8 +29,13 @@ class Post(models.Model):
                               choices=STATUS_CHOICES,
                               default='drafted')
 
-    class Meta:
-        ordering = ('-published',)
+    def save(self, *args, **kwargs):
+        posts = Post.objects.filter(slug=slugify(self.title))
+        print(posts)
+        if len(posts) > 1:
+            self.slug = f"{self.slug}-{len(posts)}"
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title
