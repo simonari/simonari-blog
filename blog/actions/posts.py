@@ -1,4 +1,5 @@
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.utils.text import slugify
 from django.http import HttpResponseRedirect, HttpResponseNotFound
@@ -27,6 +28,9 @@ def _get_post(request, year, month, day, status, slug):
 
 
 def delete_post(request, year, month, day, status, slug):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect("/blog/login")
+
     obj = _get_post(request, year, month, day, status, slug)
     obj_status = obj.status
     redirect_to = '/blog' if obj_status == 'posted' else '/blog/draft'
@@ -36,10 +40,14 @@ def delete_post(request, year, month, day, status, slug):
 
 
 def edit_post(request, year, month, day, slug):
-    pass
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect("/blog/login")
 
 
 def change_post_status(request, year, month, day, status, slug):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect("/blog/login")
+
     obj = _get_post(request, year, month, day, status, slug)
 
     status_to_set = STATUS_ANTIPODES.get(obj.status)

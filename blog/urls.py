@@ -1,10 +1,14 @@
 from django.urls import path
 from . import views
-from .actions import posts
+from .actions import posts, login
 
 app_name = 'blog'
 
 urlpatterns = [
+    # Login view
+    path('login', login.login_user, name='login'),
+    path('logout', login.logout_user, name='logout'),
+
     # Published posts views
     path('', views.PostListView.as_view(), name='post_list'),
     path('<int:year>/<int:month>/<int:day>/<slug:post>',
