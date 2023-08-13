@@ -3,6 +3,15 @@
 {% block title %}My blog{% endblock %} 
 
 {% block content %}
+{% block buttons_action %}
+{% if user.is_authenticated %}
+<div class="is-horizontal-align row">
+        <div class="col-3"><a class='button primary is-full-width' href={% url 'blog:post_create' %}>New post</a></div>  
+        <div class="col-3"><a class='button is-full-width' href={% url 'blog:draft_list' %}>To draft</a></div>
+</div>
+<br>
+{% endif %}
+{% endblock buttons_action %}
 {% for post in posts %}
 <div class="is-horizontal-align row">
     <div class="is-full-width col-6">

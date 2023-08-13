@@ -1,6 +1,7 @@
 {% extends 'blog/base_detail.html' %}
 
 {% block buttons %}
+{% if user.is_authenticated %}
 <hr>
 <div class="is-right row">
     <form method="POST" class="col-2">
@@ -18,4 +19,5 @@
         <input type="submit" class="button error is-full-width" value="Delete">
     </form>
 </div>
+{% endif %}
 {% endblock buttons %}

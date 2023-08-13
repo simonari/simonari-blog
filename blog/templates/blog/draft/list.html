@@ -3,19 +3,33 @@
 {% block title %}Drafts{% endblock %}
 
 {% block content %}
-    {% for draft in drafts %}
+{% block buttons_action %}
+{% if user.is_authenticated %}
+<div class="is-horizontal-align row">
+        <div class="col-3"><a class='button primary is-full-width' href={% url 'blog:post_create' %}>New post</a></div>  
+        <div class="col-3"><a class='button is-full-width' href={% url 'blog:post_list' %}>To posts</a></div>
+</div>
+<br>
+{% endif %}
+{% endblock buttons_action %}
+{% for post in drafts %}
+<div class="is-horizontal-align row">
+    <div class="is-full-width col-6">
         <div class="card">
-            <h2>
-                <a href="{{ draft.get_absolute_url  }}">
-                    {{ draft.title }}
-                </a>
-            </h2>
-            <p class='date'>
-                Published on {{ draft.published  }} by {{ draft.author }}
-            </p>
-            {{ draft.body | truncatewords:30 | linebreaks }}
-        </div>    
-    
-    {% endfor %}
+            <div class="row">
+                <header>
+                    <h4><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h4>
+                </header>
+            </div>
+            <div class="row">
+                <p>{{ post.body | truncatewords:30 | linebreaks }}</p>
+            </div>
+            <div class="row">
+                <p>Published on {{ post.published }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
     {% include 'blog/pagination.html' with page=page_obj %}
 {% endblock %}
