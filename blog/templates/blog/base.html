@@ -6,7 +6,7 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="is-horizontal-align">Simonari's blog</h1>
+        <div class="row is-horizontal-align"><a href={% url 'blog:post_list' %}><h1 class="is-horizontal-align">Simonari's blog</h1></a></div>
         {% block content %}{% endblock content %}
     </div>
 </body>
