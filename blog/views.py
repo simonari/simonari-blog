@@ -1,7 +1,6 @@
-from django.shortcuts import get_object_or_404, redirect
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.shortcuts import get_object_or_404
+from django.views.generic import ListView, CreateView, UpdateView
 from django.utils.text import slugify
-from django.http import HttpResponseRedirect, HttpResponseNotFound
 from .models import Post, User
 from .forms import DraftDetailUpdateForm, PostDetailUpdateForm
 

@@ -31,7 +31,7 @@ class Post(models.Model):
 
     def save(self, *args, **kwargs):
         posts = Post.objects.filter(slug=slugify(self.title))
-        print(posts)
+        # TODO add unicode support
         if len(posts) > 1:
             self.slug = f"{self.slug}-{len(posts)}"
 

@@ -1,8 +1,5 @@
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
-from django.utils.text import slugify
-from django.http import HttpResponseRedirect, HttpResponseNotFound
+from django.http import HttpResponseRedirect
 from ..models import Post
 
 STATUS_TO_SLUG = {
